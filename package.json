@@ -26,8 +26,8 @@
     "@ionic/angular": "^5.0.0",
     "cordova-android": "^7.1.4",
     "cordova-plugin-device": "^2.0.2",
-    "cordova-plugin-ionic-keyboard": "^2.0.5",
-    "cordova-plugin-ionic-webview": "^4.0.0",
+    "cordova-plugin-ionic-keyboard": "^2.2.0",
+    "cordova-plugin-ionic-webview": "^4.2.1",
     "cordova-plugin-sensors": "git+https://github.com/fabiorogeriosj/cordova-plugin-sensors.git",
     "cordova-plugin-splashscreen": "^5.0.2",
     "cordova-plugin-statusbar": "^2.4.2",
@@ -67,8 +67,13 @@
       "cordova-plugin-statusbar": {},
       "cordova-plugin-device": {},
       "cordova-plugin-splashscreen": {},
-      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-webview": {
+        "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
+      },
       "cordova-plugin-ionic-keyboard": {}
-    }
+    },
+    "platforms": [
+      "android"
+    ]
   }
 }
