@@ -1,14 +1,33 @@
-
+#face {
+  position: absolute;
+  height: 80%;
+  width: 100%;
+  top: 15%;
+}
 .grid-container {
-    position: relative;
-    display: grid;
-    grid-template-columns: auto auto;
-      
-  }
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto;
+}
 .grid-eye {
-    position: relative;
-    height: 100%;
-    width: 100%;
+  position: relative;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+  transform-origin: top center;
+
 }
 
+#eLp {
+  transform-style: preserve-3d;
+  transform-origin: right;
+}
 
+#eRp {
+  transform-style: preserve-3d;
+  transform-origin: left;  
+}
+.pPup {
+  transform-style: preserve-3d;
+  transform-origin: center;
+}

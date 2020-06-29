@@ -12,7 +12,7 @@ import anime from 'animejs/lib/anime.es.js';
 
 export class HomePage {
 
-
+  // SVG FACE ELEMENTS
   eyeLsleep = 'M 19 99 Q 59 110 95 116 Q 148 114 176 103 Q 159 127 96 136 Q 47 128 21 102 Z';
   eyeRsleep = 'M 19 99 Q 59 110 95 116 Q 148 114 176 103 Q 159 127 96 136 Q 47 128 21 102 Z';
   pupSleep = 'M 93 120 A 14 10 0 1 1 119 120 Z';
@@ -28,6 +28,9 @@ export class HomePage {
   eyeRwUp = this.eyeLwUp;
 
 
+  // SENSORS VARIABLES 
+
+  // GRAVITY 
   sensorG: any;
   gVal: any;
   gValX = 0;
@@ -36,6 +39,7 @@ export class HomePage {
 
   tempVal: any;
 
+  // 
   // STATUS 
   awake = false;
   awakeAnime: any;
@@ -55,12 +59,10 @@ export class HomePage {
   activateR(sensActiv) {
 
     setInterval(() => {
-
       this.sensors.getState().then((values) => {
         console.log(values);
         this.gravityData(values);
       });
-
     }, 300);
   }
 
@@ -72,6 +74,7 @@ export class HomePage {
     this.gValZ = val[2].toFixed(3);
 
     this.checkAwake();
+    this.eyePosition();
 
   }
 
@@ -93,8 +96,6 @@ export class HomePage {
       this.awake = true;
 
     }
-
-
   }
 
   wakeUpExpression(idTarget, valueP, nDel, scLY) {
@@ -112,8 +113,33 @@ export class HomePage {
     });
   }
 
+  eyePosition(){
 
+    anime({
+      targets: '.grid-eye',
+      rotate: this.gValX * 5,
+      easing: 'linear'
+    });
 
+  }
+
+  touchFaceIn(ev){
+
+    anime({ targets: '.pPup', scale: 0.5, elastic: 100 });
+    anime({ targets: '#eLp', skewY: '13deg',  elastic: 100 });
+    anime({ targets: '#eRp', skewY: '-13deg',  elastic: 100 });
+  }
+
+  touchFaceOut(ev){
+    anime({targets: '.pPup', scale: 1,  elastic: 100  });
+    anime({ targets: '#eLp', skewY: '0deg',  elastic: 100 });
+    anime({ targets: '#eRp', skewY: '0deg',  elastic: 100 });
+
+  }
+
+  touchFaceMove(ev){
+    
+  }
 
 
 }
