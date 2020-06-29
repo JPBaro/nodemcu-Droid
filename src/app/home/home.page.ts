@@ -1,7 +1,9 @@
 import { Platform } from '@ionic/angular';
 import { Sensors, TYPE_SENSOR } from '@ionic-native/sensors/ngx';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
+import { map } from 'rxjs/operators';
+import { Socket } from 'ngx-socket-io';
 
 
 @Component({
@@ -10,7 +12,13 @@ import anime from 'animejs/lib/anime.es.js';
   styleUrls: ['home.page.scss'],
 })
 
-export class HomePage {
+export class HomePage implements OnInit {
+
+  // MESSAGE DETAILS IO
+  message = '';
+  messages = [];
+  currentUser = '';
+
 
   // SVG FACE ELEMENTS
   eyeLsleep = 'M 19 99 Q 59 110 95 116 Q 148 114 176 103 Q 159 127 96 136 Q 47 128 21 102 Z';
@@ -44,12 +52,40 @@ export class HomePage {
   awake = false;
   awakeAnime: any;
 
-  constructor(private sensors: Sensors, private platform: Platform) {
+  // IO 
+  mensaje: any;
+  displaySms: any;
+
+  constructor(private sensors: Sensors, private platform: Platform, private socket: Socket) {
+
+    // this.socket = io('http://192.168.1.14:3000');
 
     platform.ready().then(() => {
       this.initSensor();
+
+    });
+
+  }
+
+  ngOnInit() {
+
+
+    this.socket.connect();
+
+    const name = `user-${new Date().getTime()}`;
+    this.currentUser = name;
+
+    this.socket.emit('set-name', name);
+
+    this.socket.fromEvent('message').subscribe(message => {
+      console.log(message);
+      document.getElementById('innersms').innerHTML = `${message}`;
+      this.messages.push(message);
     });
   }
+
+
+
 
   initSensor() {
     this.sensors.enableSensor(TYPE_SENSOR.ACCELEROMETER);
@@ -60,10 +96,9 @@ export class HomePage {
 
     setInterval(() => {
       this.sensors.getState().then((values) => {
-        console.log(values);
         this.gravityData(values);
       });
-    }, 300);
+    }, 500);
   }
 
 
@@ -86,6 +121,8 @@ export class HomePage {
       this.wakeUpExpression('.grid-eye .pPup', this.pupSleep, 100, 1);
       this.wakeUpExpression('.grid-mouth .p', this.mouthLying, 400, 0.5);
       this.awake = false;
+      this.socket.emit('sms-domecu', 'durmiendo');
+
     }
 
     if (this.gValZ < 8 && this.awake === false) {
@@ -94,6 +131,7 @@ export class HomePage {
       this.wakeUpExpression('.grid-eye .pPup', this.pupilaLreg, 100, 1);
       this.wakeUpExpression('.grid-mouth .p', this.mouthNormal, 400, 2);
       this.awake = true;
+      this.socket.emit('sms-domecu', 'despierto');
 
     }
   }
@@ -113,7 +151,7 @@ export class HomePage {
     });
   }
 
-  eyePosition(){
+  eyePosition() {
 
     anime({
       targets: '.grid-eye',
@@ -123,23 +161,34 @@ export class HomePage {
 
   }
 
-  touchFaceIn(ev){
+  touchFaceIn(ev) {
 
     anime({ targets: '.pPup', scale: 0.5, elastic: 100 });
-    anime({ targets: '#eLp', skewY: '13deg',  elastic: 100 });
-    anime({ targets: '#eRp', skewY: '-13deg',  elastic: 100 });
+    anime({ targets: '#eLp', skewY: '13deg', elastic: 100 });
+    anime({ targets: '#eRp', skewY: '-13deg', elastic: 100 });
   }
 
-  touchFaceOut(ev){
-    anime({targets: '.pPup', scale: 1,  elastic: 100  });
-    anime({ targets: '#eLp', skewY: '0deg',  elastic: 100 });
-    anime({ targets: '#eRp', skewY: '0deg',  elastic: 100 });
+  touchFaceOut(ev) {
+    anime({ targets: '.pPup', scale: 1, elastic: 100 });
+    anime({ targets: '#eLp', skewY: '0deg', elastic: 100 });
+    anime({ targets: '#eRp', skewY: '0deg', elastic: 100 });
 
   }
 
-  touchFaceMove(ev){
-    
+  touchFaceMove(ev) {
+
   }
 
+
+  getMessage() {
+    this.socket.fromEvent('message').subscribe(message => {
+
+      if (message !== '') {
+        console.log(message);
+        document.getElementById('innersms').innerHTML = `${message}`;
+        this.messages.push(message);
+      }
+    });
+  }
 
 }
