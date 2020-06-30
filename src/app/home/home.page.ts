@@ -72,20 +72,13 @@ export class HomePage implements OnInit {
 
     this.socket.connect();
 
-    const name = `user-${new Date().getTime()}`;
-    this.currentUser = name;
-
-    this.socket.emit('set-name', name);
-
     this.socket.fromEvent('message').subscribe(message => {
       console.log(message);
       document.getElementById('innersms').innerHTML = `${message}`;
       this.messages.push(message);
     });
+
   }
-
-
-
 
   initSensor() {
     this.sensors.enableSensor(TYPE_SENSOR.ACCELEROMETER);
@@ -93,14 +86,12 @@ export class HomePage implements OnInit {
   }
 
   activateR(sensActiv) {
-
     setInterval(() => {
       this.sensors.getState().then((values) => {
         this.gravityData(values);
       });
     }, 500);
   }
-
 
   gravityData(val) {
 
@@ -121,7 +112,7 @@ export class HomePage implements OnInit {
       this.wakeUpExpression('.grid-eye .pPup', this.pupSleep, 100, 1);
       this.wakeUpExpression('.grid-mouth .p', this.mouthLying, 400, 0.5);
       this.awake = false;
-      this.socket.emit('sms-domecu', 'durmiendo');
+      this.socket.emit('sms-domecu', 0);
 
     }
 
@@ -131,7 +122,7 @@ export class HomePage implements OnInit {
       this.wakeUpExpression('.grid-eye .pPup', this.pupilaLreg, 100, 1);
       this.wakeUpExpression('.grid-mouth .p', this.mouthNormal, 400, 2);
       this.awake = true;
-      this.socket.emit('sms-domecu', 'despierto');
+      this.socket.emit('sms-domecu', 1);
 
     }
   }
