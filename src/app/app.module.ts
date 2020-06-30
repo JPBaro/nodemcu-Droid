@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { Sensors } from '@ionic-native/sensors/ngx';
 import { SocketIoModule, SocketIoConfig } from 'ngx-socket-io';
+import { CameraPreview } from '@ionic-native/camera-preview/ngx';
 
 const config: SocketIoConfig = { url: 'http://192.168.1.14:3000', options: {} };
 
@@ -20,7 +21,7 @@ const config: SocketIoConfig = { url: 'http://192.168.1.14:3000', options: {} };
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule,  SocketIoModule.forRoot(config) ],
   providers: [
     StatusBar,
-    SplashScreen, Sensors ,
+    SplashScreen, Sensors , CameraPreview,
     
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],

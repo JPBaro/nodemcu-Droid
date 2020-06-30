@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import anime from 'animejs/lib/anime.es.js';
 import { map } from 'rxjs/operators';
 import { Socket } from 'ngx-socket-io';
-
+import { CameraPreview } from '@ionic-native/camera-preview/ngx';
 
 @Component({
   selector: 'app-home',
@@ -56,7 +56,17 @@ export class HomePage implements OnInit {
   mensaje: any;
   displaySms: any;
 
-  constructor(private sensors: Sensors, private platform: Platform, private socket: Socket) {
+  // CAMERA 
+  smallPreview: boolean;
+  IMAGE_PATH: any;
+  colorEffect = 'none';
+  setZoom = 1;
+  flashMode = 'off';
+  isToBack = false;
+
+  statusCamera = false;
+
+  constructor(private sensors: Sensors, private platform: Platform, private socket: Socket, private cameraPreview: CameraPreview) {
 
     // this.socket = io('http://192.168.1.14:3000');
 
@@ -69,7 +79,7 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
 
-
+    this.cameraPreview.startCamera({ x: 80, y: 450, width: 150, height: 150, toBack: false, previewDrag: true, tapPhoto: false });
     this.socket.connect();
 
     this.socket.fromEvent('message').subscribe(message => {
@@ -164,6 +174,15 @@ export class HomePage implements OnInit {
     anime({ targets: '#eLp', skewY: '0deg', elastic: 100 });
     anime({ targets: '#eRp', skewY: '0deg', elastic: 100 });
 
+    if (this.statusCamera === false) {
+
+      this.show();
+      this.statusCamera = true;
+    } else {
+
+    }
+    
+
   }
 
   touchFaceMove(ev) {
@@ -181,5 +200,10 @@ export class HomePage implements OnInit {
       }
     });
   }
+
+  show() {
+    this.cameraPreview.show();
+  }
+
 
 }

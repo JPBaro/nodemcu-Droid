@@ -19,6 +19,7 @@
     "@angular/platform-browser": "~9.1.6",
     "@angular/platform-browser-dynamic": "~9.1.6",
     "@angular/router": "~9.1.6",
+    "@ionic-native/camera-preview": "^5.27.0",
     "@ionic-native/core": "^5.0.7",
     "@ionic-native/sensors": "^5.27.0",
     "@ionic-native/splash-screen": "^5.0.0",
@@ -26,6 +27,7 @@
     "@ionic/angular": "^5.0.0",
     "animejs": "^3.2.0",
     "cordova-android": "^7.1.4",
+    "cordova-plugin-camera-preview": "^0.12.0",
     "cordova-plugin-device": "^2.0.2",
     "cordova-plugin-ionic-keyboard": "^2.2.0",
     "cordova-plugin-ionic-webview": "^4.2.1",
@@ -75,7 +77,8 @@
       "cordova-plugin-ionic-webview": {
         "ANDROID_SUPPORT_ANNOTATIONS_VERSION": "27.+"
       },
-      "cordova-plugin-ionic-keyboard": {}
+      "cordova-plugin-ionic-keyboard": {},
+      "cordova-plugin-camera-preview": {}
     },
     "platforms": [
       "android"
